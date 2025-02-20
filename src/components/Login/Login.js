@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../AuthContext'
 
 const LoginContainer = styled.div`
     background-color: aliceblue;
@@ -58,17 +59,37 @@ const SignUpLink = styled(Link)`
     }
 `;
 
+const Login = () => {
+  const { login }  = useContext(AuthContext);
+  const [credentials, setCredentials] = useState({ username: "", password: "" });
+  const [error, setError] = useState(null);
 
+  const handleLogin = async () => {
+    try {
+      await login(credentials);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
 
+  const errorMessage = error && <div style={{color: 'red'}}>{error}</div>;
 
-function Login() {
   return (
     <LoginContainer>
         <LoginBox>
             <h1 style={{marginBottom:'30px'}}>Login</h1>
-            <Input type="text" placeholder="Username" />
-            <Input type="password" placeholder="Password" />
-            <Button>Login</Button>
+            {errorMessage}
+            <Input 
+                type="text" 
+                placeholder="Username" 
+                value={credentials.username} 
+                onChange={(e)=>{setCredentials({...credentials, username:e.target.value})}} />
+            <Input 
+                type="password" 
+                placeholder="Password" 
+                value={credentials.password} 
+                onChange={(e)=>{setCredentials({...credentials, password:e.target.value})}} />
+            <Button onClick={handleLogin}>Login</Button>
             <p>Not signed up yet? <SignUpLink to="/signup">SignUp</SignUpLink></p>
         </LoginBox>
     </LoginContainer>

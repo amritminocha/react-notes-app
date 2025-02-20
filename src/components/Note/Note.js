@@ -36,7 +36,7 @@ const DeleteButton = styled.button`
 const Note = ({ note, deleteNote }) => {
   return (
     <NoteContainer>
-      <NoteText>{note.text}</NoteText>
+      <NoteText>{note?.content}</NoteText>
       <DeleteButton onClick={deleteNote}>Delete</DeleteButton>
     </NoteContainer>
   )

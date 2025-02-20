@@ -12,7 +12,7 @@ const Notes = ({notes, deleteNote}) => {
   return (
     <NoteContainer>
         {notes.map(note => (
-            <Note key={note.id} note={note} deleteNote={()=>deleteNote(note.id)} />
+            <Note key={note?._id} note={note} deleteNote={()=>deleteNote(note?._id)} />
         ))}
     </NoteContainer>
   )

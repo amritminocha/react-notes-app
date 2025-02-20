@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext, useState } from 'react'
 import styled from 'styled-components'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../AuthContext'
 
 const SignUpContainer = styled.div`
     background-color: aliceblue;
@@ -58,19 +59,51 @@ const LoginLink = styled(Link)`
     }
 `;
 
-
-
-
 const SignUp = () => {
+  const { signUp } = useContext(AuthContext)
+  const [userData, setUserData] = useState({
+    name: '',
+    email: '',
+    username: '',
+    password: '',
+  })
+  const [error, setError] = useState(null)
+
+  const handleSignUp = async () => {
+    try {
+        await signUp(userData)
+    } catch (err) {
+        setError(err.message)
+    }
+  }
+
+  const errorMessage = error && <div style={{color: 'red'}}>{error}</div>;
   return (
     <SignUpContainer>
         <SignUpBox>
             <h1 style={{marginBottom:'20px'}}>SignUp</h1>
-            <Input type="text" placeholder="Name" />
-            <Input type="text" placeholder="Email" />
-            <Input type="text" placeholder="Username" />
-            <Input type="password" placeholder="Password" />
-            <Button>Sign Up</Button>
+            {errorMessage}
+            <Input 
+                type="text" 
+                placeholder="Name"
+                value={userData.name}
+                onChange={(e) => {setUserData(...userData, userData.name)}} />
+            <Input 
+                type="text" 
+                placeholder="Email"
+                value={userData.email}
+                onChange={(e) => {setUserData(...userData, userData.email)}} />
+            <Input 
+                type="text" 
+                placeholder="Username"
+                value={userData.username}
+                onChange={(e) => {setUserData(...userData, userData.username)}} />
+            <Input 
+                type="password" 
+                placeholder="Password"
+                value={userData.password}
+                onChange={(e) => {setUserData(...userData, userData.password)}} />
+            <Button onClick={handleSignUp}>Sign Up</Button>
             <p>Already signed up? <LoginLink to="/login">Login</LoginLink></p>
         </SignUpBox>
     </SignUpContainer>
