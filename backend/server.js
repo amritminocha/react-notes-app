@@ -7,8 +7,6 @@ const noteRoutes = require("./routes/noteRoutes");
 
 const app = express();
 
-connectDB();
-
 app.use(cors({
     origin: "http://localhost:3000", // Ensure this matches your frontend URL
     credentials: true, // Allow credentials (cookies, authorization headers, etc.)
@@ -22,5 +20,4 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/notes", noteRoutes);
 
-const PORT = process.env.PORT;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+module.exports = app;
